@@ -1,0 +1,26 @@
+version: '2.2'
+services:
+  elasticsearch:
+    platform: linux/x86_64
+    image: docker.elastic.co/elasticsearch/elasticsearch:6.8.23
+    container_name: elasticsearch
+    environment:
+      - discovery.type=single-node
+    volumes:
+      - esdata1:/usr/share/elasticsearch/data
+    ports:
+      - 9200:9200
+
+  kbn01:
+    platform: linux/x86_64
+    image: "kibana:6.8.23"
+    environment:
+      ELASTICSEARCH_HOSTS: http://elasticsearch:9200
+    volumes:
+      - ./kibana.yml:/usr/share/kibana/config/kibana.yml
+    ports:
+      - 5601:5601
+
+volumes:
+  esdata1:
+    driver: local
